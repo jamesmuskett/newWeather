@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".newWeather"
+            android:name=".NewWeather"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -21,3 +21,5 @@
     </application>
 
 </manifest>
+
+

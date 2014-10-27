@@ -9,12 +9,22 @@
     android:background="#FF0099cc"
     tools:context=".newWeather$PlaceholderFragment">
 
+    <EditText android:id="@+id/edit_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/change_city" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/edit_message"
+        android:text="@string/change_city"
+        android:onClick="sendMessage" />
     <TextView
         android:id="@+id/city_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/edit_message"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
@@ -49,4 +59,6 @@
         android:layout_below="@id/weather_icon"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+
 </RelativeLayout>
