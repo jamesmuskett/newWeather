@@ -3,7 +3,8 @@
 
     <string name="app_name">newWeather</string>
     <string name="change_city">change city</string>
-    <string name="clear_city">clear saved city</string>
+    <string name="set_city">set default city</string>
+    <string name="clear_city">clear default city</string>
     <string name="search_city">search</string>
     <string name="weather_api_key">ac300ccff8ffebc3b8b534cd1963004b</string>
     <string name="weather_sunny"></string>
@@ -18,5 +19,6 @@
     <string name="title_activity_new">NewActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_extra_weather">ExtraWeather</string>
 
 </resources>

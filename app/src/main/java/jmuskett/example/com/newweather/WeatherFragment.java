@@ -34,12 +34,11 @@ public class WeatherFragment extends Fragment {
     EditText cityText;
     Handler handler;
 
-
-
     public WeatherFragment() {
         handler = new Handler();
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +48,16 @@ public class WeatherFragment extends Fragment {
         updatedField = (TextView) rootView.findViewById(R.id.updated_field);
         detailsField = (TextView) rootView.findViewById(R.id.details_field);
         currentTemperatureField = (TextView) rootView.findViewById(R.id.current_temperature_field);
+        cityText = (EditText) rootView.findViewById(R.id.edit_message);
+
+
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            cityText.setText(bundle.getString("bundleCity", "chage city"));
+            weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
+            updateWeatherData(bundle.getString("bundleCity", "chage city"));
+
+        }
 
         weatherIcon = (TextView) rootView.findViewById(R.id.weather_icon);
         weatherIcon.setTypeface(weatherFont);
