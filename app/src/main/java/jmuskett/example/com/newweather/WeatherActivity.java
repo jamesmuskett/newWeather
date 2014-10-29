@@ -17,18 +17,31 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
-public class NewWeather extends Activity {
+public class WeatherActivity extends Activity {
+
+    public final static String EXTRA_CHANGE_CITY_MESSAGE = "jmuskett.example.com.newweather.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_weather);
+        setContentView(R.layout.activity_weather);
+        Intent intent = getIntent();
+        String city = intent.getStringExtra(WeatherActivity.EXTRA_CHANGE_CITY_MESSAGE);
+        Bundle mBundle = new Bundle();
+        mBundle.putString("bundleCity", city);
+        WeatherFragment wf = new WeatherFragment();
+        wf.setArguments(mBundle);
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, wf)
+                    .commit();
+        }
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.new_weather, menu);
+        getMenuInflater().inflate(R.menu.weather, menu);
         return true;
     }
 
@@ -68,7 +81,6 @@ public class NewWeather extends Activity {
         builder.show();
 
     }
-
     private void showSetCityInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("change city");
@@ -96,8 +108,8 @@ public class NewWeather extends Activity {
     }
 
     public void changeCity(String city) {
-        WeatherFragment wf = (WeatherFragment) getFragmentManager().findFragmentById(R.id.container);
-        wf.changeCity(city);
+           WeatherFragment wf = (WeatherFragment) getFragmentManager().findFragmentById(R.id.container);
+           wf.changeCity(city);
     }
 
     public static class PlaceholderFragment extends Fragment {
@@ -107,18 +119,16 @@ public class NewWeather extends Activity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_new_weather, container, false);
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
             return rootView;
         }
     }
-
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, ExtraWeather.class);
+        Intent intent = new Intent(this, WeatherActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
-        intent.putExtra(ExtraWeather.EXTRA_CHANGE_CITY_MESSAGE, message);
+        intent.putExtra(EXTRA_CHANGE_CITY_MESSAGE, message);
         startActivity(intent);
     }
-
 }

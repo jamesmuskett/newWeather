@@ -1,7 +1,6 @@
 package jmuskett.example.com.newweather;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +43,7 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_new_weather, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
         cityField = (TextView) rootView.findViewById(R.id.city_field);
         updatedField = (TextView) rootView.findViewById(R.id.updated_field);
         detailsField = (TextView) rootView.findViewById(R.id.details_field);
