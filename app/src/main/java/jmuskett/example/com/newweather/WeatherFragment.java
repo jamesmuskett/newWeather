@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.os.Handler;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -50,25 +51,30 @@ public class WeatherFragment extends Fragment {
         currentTemperatureField = (TextView) rootView.findViewById(R.id.current_temperature_field);
         cityText = (EditText) rootView.findViewById(R.id.edit_message);
 
+        weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
+        weatherIcon = (TextView) rootView.findViewById(R.id.weather_icon);
+        weatherIcon.setTypeface(weatherFont);
 
         Bundle bundle = this.getArguments();
         if(bundle != null) {
-            cityText.setText(bundle.getString("bundleCity", "chage city"));
-            weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
-            updateWeatherData(bundle.getString("bundleCity", "chage city"));
 
+            String bundleCity = bundle.getString("bundleCity");
+            cityText.setText(bundleCity);
+
+            if(bundleCity.isEmpty()){
+                bundleCity =  new CityPreference(getActivity()).getCity();
+            }
+
+            updateWeatherData(bundleCity);
         }
 
-        weatherIcon = (TextView) rootView.findViewById(R.id.weather_icon);
-        weatherIcon.setTypeface(weatherFont);
+
         return rootView;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
-        updateWeatherData(new CityPreference(getActivity()).getCity());
     }
 
     private void updateWeatherData(final String city) {
@@ -109,8 +115,8 @@ public class WeatherFragment extends Fragment {
             setWeatherIcon(details.getInt("id"),
                     json.getJSONObject("sys").getLong("sunrise") * 1000,
                     json.getJSONObject("sys").getLong("sunset") * 1000);
-        } catch (Exception e) {
-            Log.e("NewWeather", "bad json data");
+        } catch (JSONException e) {
+            Log.e("NewWeather", e.getMessage());
         }
     }
 

@@ -19,17 +19,10 @@ import android.widget.EditText;
 
 public class NewWeather extends Activity {
 
-    public final static String EXTRA_MESSAGE = "jmuskett.example.com.newweather.MESSAGE";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_weather);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new WeatherFragment())
-                    .commit();
-        }
     }
 
 
@@ -44,6 +37,9 @@ public class NewWeather extends Activity {
         int id = item.getItemId();
         if (id == R.id.change_city) {
             showChangeCityInputDialog();
+        }
+        if (id == R.id.set_city) {
+            showSetCityInputDialog();
         }
         if (id == R.id.clear_city) {
             new CityPreference(this).clearCity();
@@ -73,11 +69,35 @@ public class NewWeather extends Activity {
 
     }
 
+    private void showSetCityInputDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("change city");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        input.requestFocus();
+        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setCity(input.getText().toString());
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+            }
+        });
+
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        builder.setView(input);
+        builder.show();
+
+    }
+
+    public void setCity(String city) {
+        new CityPreference(this).setCity(city);
+    }
 
     public void changeCity(String city) {
-     //   WeatherFragment wf = (WeatherFragment) getFragmentManager().findFragmentById(R.id.container);
-      //  wf.changeCity(city);
-        new CityPreference(this).setCity(city);
+        WeatherFragment wf = (WeatherFragment) getFragmentManager().findFragmentById(R.id.container);
+        wf.changeCity(city);
     }
 
     public static class PlaceholderFragment extends Fragment {
@@ -88,7 +108,7 @@ public class NewWeather extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_new_weather, container, false);
+            View rootView = inflater.inflate(R.layout.activity_new_weather, container, false);
             return rootView;
         }
     }
@@ -97,7 +117,7 @@ public class NewWeather extends Activity {
         Intent intent = new Intent(this, ExtraWeather.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(ExtraWeather.EXTRA_CHANGE_CITY_MESSAGE, message);
         startActivity(intent);
     }
 
