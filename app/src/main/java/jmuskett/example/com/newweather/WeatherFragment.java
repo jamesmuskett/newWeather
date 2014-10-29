@@ -77,26 +77,17 @@ public class WeatherFragment extends Fragment {
     }
 
     private void updateWeatherData(final String city) {
-        new Thread() {
-            public void run() {
-                final JSONObject json = RemoteFetch.getJSON(getActivity(), city);
-                if (json == null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(), getActivity().getString(R.string.place_not_found), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            RenderWeather(json);
-                        }
-                    });
-                }
+        RemoteFetch.makeJSONRequest(getActivity(),city,new RemoteFetch.JSONResponseListener() {
+            @Override
+            public void onJSONDataReceived(JSONObject json) {
+                RenderWeather(json);
             }
-        }.start();
+
+            @Override
+            public void onJSONDataFailure() {
+                Toast.makeText(getActivity(), getActivity().getString(R.string.place_not_found), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void RenderWeather(JSONObject json) {

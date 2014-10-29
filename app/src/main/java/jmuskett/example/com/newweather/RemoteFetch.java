@@ -1,6 +1,7 @@
 package jmuskett.example.com.newweather;
 
 import android.content.Context;
+import android.os.Handler;
 
 import org.json.JSONObject;
 
@@ -18,7 +19,22 @@ public class RemoteFetch {
             "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
 
 
-    public static JSONObject getJSON(Context context, String city) {
+    public static void makeJSONRequest(Context context, String city, final JSONResponseListener listener) {
+        Handler handler = new Handler();
+        final JSONObject json = RemoteFetch.getJSON(context, city);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (json == null) {
+                    listener.onJSONDataFailure();
+                } else {
+                    listener.onJSONDataReceived(json);
+                }
+            }
+        });
+    }
+
+    private static JSONObject getJSON(Context context, String city) {
         try {
             URL url = new URL(String.format(WEATHER_API, city));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -42,4 +58,8 @@ public class RemoteFetch {
         }
     }
 
+    public interface JSONResponseListener {
+        void onJSONDataReceived(JSONObject object);
+        void onJSONDataFailure();
+    }
 }
