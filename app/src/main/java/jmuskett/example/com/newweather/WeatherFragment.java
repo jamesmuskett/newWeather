@@ -3,21 +3,21 @@ package jmuskett.example.com.newweather;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.os.Handler;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.util.Locale;
 import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -77,28 +77,6 @@ public class WeatherFragment extends Fragment {
     }
 
     private void updateWeatherData(final String city) {
-        new Thread() {
-            public void run() {
-                final JSONObject json = RemoteFetch.getJSON(getActivity(), city);
-                if (json == null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(), getActivity().getString(R.string.place_not_found), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            RenderWeather(json);
-                        }
-                    });
-                }
-            }
-        }.start();
-    }
-/*    private void updateWeatherData(final String city) {
         RemoteFetch.makeJSONRequest(getActivity(),city,new RemoteFetch.JSONResponseListener() {
             @Override
             public void onJSONDataReceived(JSONObject json) {
@@ -110,7 +88,7 @@ public class WeatherFragment extends Fragment {
                 Toast.makeText(getActivity(), getActivity().getString(R.string.place_not_found), Toast.LENGTH_LONG).show();
             }
         });
-    }*/
+    }
 
     private void RenderWeather(JSONObject json) {
         try {
