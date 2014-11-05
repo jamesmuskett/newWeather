@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 
 public class CityListActivity extends Activity {
-    ListView listView;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +61,6 @@ public class CityListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
                 City item = (City) listView.getItemAtPosition(position);
                 sendMessage(item.getName());
             }
