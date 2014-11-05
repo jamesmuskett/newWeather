@@ -1,12 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".newWeather" >
+    tools:context=".ExtraWeather" >
     <item android:id="@+id/change_city"
         android:title="@string/change_city"
         android:orderInCategory="1"
         android:showAsAction="never" />
+    <item android:id="@+id/set_city"
+        android:title="@string/set_city"
+        android:orderInCategory="2"
+        android:showAsAction="never" />
     <item android:id="@+id/clear_city"
         android:title="@string/clear_city"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:showAsAction="never" />
 </menu>
