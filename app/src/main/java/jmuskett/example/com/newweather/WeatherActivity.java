@@ -79,6 +79,7 @@ public class WeatherActivity extends Activity {
         builder.show();
 
     }
+
     private void showSetCityInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("change city");
@@ -106,8 +107,8 @@ public class WeatherActivity extends Activity {
     }
 
     public void changeCity(String city) {
-           WeatherFragment wf = (WeatherFragment) getFragmentManager().findFragmentById(R.id.container);
-           wf.changeCity(city);
+        WeatherFragment wf = (WeatherFragment) getFragmentManager().findFragmentById(R.id.container);
+        wf.changeCity(city);
     }
 
     public void sendMessage(View view) {
