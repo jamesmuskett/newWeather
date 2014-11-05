@@ -12,12 +12,10 @@ import android.widget.TextView;
  */
 public class ListViewAdapter extends BaseAdapter {
 
-    private Context context;
     private City[] data;
     private LayoutInflater inflater;
 
     public ListViewAdapter(Context context, City[] data) {
-        this.context = context;
         this.data = data;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
