@@ -11,15 +11,66 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 
 
 public class CityListActivity extends Activity {
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_list);
+        listView = (ListView) findViewById(R.id.city_list);
+        City[] cityValues = new City[]{
+                new City("salford"),
+                new City("sale"),
+                new City("oldham"),
+                new City("leigh"),
+                new City("bolton"),
+                new City("salford"),
+                new City("sale"),
+                new City("oldham"),
+                new City("leigh"),
+                new City("bolton"),
+                new City("salford"),
+                new City("sale"),
+                new City("oldham"),
+                new City("leigh"),
+                new City("bolton"),
+                new City("salford"),
+                new City("sale"),
+                new City("oldham"),
+                new City("leigh"),
+                new City("bolton"),
+                new City("salford"),
+                new City("sale"),
+                new City("oldham"),
+                new City("leigh"),
+                new City("bolton")
+        };
+
+
+        ListViewAdapter adapter = new ListViewAdapter(this, cityValues);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // ListView Clicked item index
+                int itemPosition = position;
+
+                // ListView Clicked item value
+                City item = (City) listView.getItemAtPosition(position);
+                sendMessage(item.getName());
+            }
+
+        });
     }
 
 
@@ -93,14 +144,17 @@ public class CityListActivity extends Activity {
     }
 
     public void changeCity(String city) {
-        WeatherFragment wf = (WeatherFragment) getFragmentManager().findFragmentById(R.id.container);
-        wf.changeCity(city);
+        sendMessage(city);
     }
 
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, WeatherActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
+        sendMessage(message);
+    }
+
+    public void sendMessage(String message) {
+        Intent intent = new Intent(this, WeatherActivity.class);
         intent.putExtra(WeatherActivity.EXTRA_CHANGE_CITY_MESSAGE, message);
         startActivity(intent);
     }

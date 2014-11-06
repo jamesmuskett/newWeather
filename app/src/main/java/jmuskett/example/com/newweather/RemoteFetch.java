@@ -34,7 +34,7 @@ public class RemoteFetch {
         });
     }
 
-    private static JSONObject getJSON(Context context, String city) {
+    public static JSONObject getJSON(Context context, String city) {
         try {
             URL url = new URL(String.format(WEATHER_API, city));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -60,6 +60,7 @@ public class RemoteFetch {
 
     public interface JSONResponseListener {
         void onJSONDataReceived(JSONObject object);
+
         void onJSONDataFailure();
     }
 }
