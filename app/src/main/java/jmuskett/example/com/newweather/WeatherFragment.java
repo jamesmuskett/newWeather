@@ -3,21 +3,21 @@ package jmuskett.example.com.newweather;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.os.Handler;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.util.Locale;
 import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -55,13 +55,13 @@ public class WeatherFragment extends Fragment {
         weatherIcon.setTypeface(weatherFont);
 
         Bundle bundle = this.getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
 
             String bundleCity = bundle.getString("bundleCity");
             cityText.setText(bundleCity);
 
-            if(bundleCity.isEmpty()){
-                bundleCity =  new CityPreference(getActivity()).getCity();
+            if (bundleCity.isEmpty()) {
+                bundleCity = new CityPreference(getActivity()).getCity();
             }
 
             updateWeatherData(bundleCity);

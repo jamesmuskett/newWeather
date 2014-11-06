@@ -2,10 +2,13 @@ package jmuskett.example.com.newweather;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,19 +22,24 @@ public class RemoteFetch {
             "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
 
 
-    public static void makeJSONRequest(Context context, String city, final JSONResponseListener listener) {
-        Handler handler = new Handler();
-        final JSONObject json = RemoteFetch.getJSON(context, city);
-        handler.post(new Runnable() {
+    public static void makeJSONRequest(final Context context, final String city, final JSONResponseListener listener) {
+        final Handler handler = new Handler();
+        new Thread() {
             @Override
             public void run() {
-                if (json == null) {
-                    listener.onJSONDataFailure();
-                } else {
-                    listener.onJSONDataReceived(json);
-                }
+                final JSONObject json = RemoteFetch.getJSON(context, city);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (json == null) {
+                            listener.onJSONDataFailure();
+                        } else {
+                            listener.onJSONDataReceived(json);
+                        }
+                    }
+                });
             }
-        });
+        }.start();
     }
 
     private static JSONObject getJSON(Context context, String city) {
@@ -48,18 +56,24 @@ public class RemoteFetch {
             reader.close();
             JSONObject data = new JSONObject(json.toString());
             if (data.getInt("cod") != 200) {
+                Log.d("newWeather", "cod wasn't 200! It was " + data.getInt("cod"));
                 return null;
             }
 
             return data;
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            Log.e("newWeather", e.getMessage(), e);
+            return null;
+        } catch (JSONException e) {
+            Log.e("newWeather", e.getMessage(), e);
             return null;
         }
     }
 
     public interface JSONResponseListener {
         void onJSONDataReceived(JSONObject object);
+
         void onJSONDataFailure();
     }
 }
