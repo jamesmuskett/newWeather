@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".newWeather"
-    android:background="#FF0011CC">
+    android:background="#FF0099cc">
     <ListView
         android:id="@+id/city_list"
         android:layout_height="wrap_content"
